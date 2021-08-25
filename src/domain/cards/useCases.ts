@@ -53,6 +53,6 @@ export const drawNextCard = (): Observable<Card[]> =>
 
       save(cards);
 
-      return [...cards];
+      return cards;
     }),
   );

@@ -1,22 +1,24 @@
 import { Button } from 'components/buttons';
 import { FlexView } from 'components/views';
 import React, { FC } from 'react';
+import { Text } from 'react-native';
 import { useHomePresenter } from 'screens/Home/presenter';
 import { WrapperView, StyledImage } from 'screens/Home/styles';
 
 const HomeScreen: FC = () => {
-  const { cards, placeBet } = useHomePresenter();
+  const { values, placeBet } = useHomePresenter();
 
   return (
     <FlexView>
+      <Text>{values.outcome}</Text>
       <WrapperView>
-        {cards.map(card => (
+        {values.cards.map(card => (
           <StyledImage key={card.code} source={{ uri: card.image }} />
         ))}
       </WrapperView>
       <WrapperView>
-        <Button title="Up" onPress={placeBet} />
-        <Button title="Down" />
+        <Button title="Up" onPress={() => placeBet('UP')} />
+        <Button title="Down" onPress={() => placeBet('DOWN')} />
       </WrapperView>
     </FlexView>
   );
