@@ -10,6 +10,6 @@ export const WrapperView = styled.View`
 export const StyledImage = styled.Image.attrs(() => ({
   resizeMode: 'contain',
 }))`
-  width: 314;
-  height: 226;
+  width: 314px;
+  height: 226px;
 `;

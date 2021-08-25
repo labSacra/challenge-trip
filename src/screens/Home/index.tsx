@@ -14,7 +14,7 @@ const HomeScreen: FC = () => {
           source={{ uri: 'https://deckofcardsapi.com/static/img/JD.png' }}
         />
         <StyledImage
-          source={{ uri: 'https://deckofcardsapi.com/static/img/JD.png' }}
+          source={{ uri: 'https://deckofcardsapi.com/static/img/QD.png' }}
         />
       </WrapperView>
       <WrapperView>

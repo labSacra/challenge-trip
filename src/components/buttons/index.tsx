@@ -4,12 +4,13 @@ import { Pressable, Text } from 'react-native';
 type ButtonProps = {
   onPress?: () => void;
   title: string;
+  isDisabled?: boolean;
 };
 
 /**
  * Not using styled components because pressable is not properly supported
  */
-export const Button = ({ onPress, title }: ButtonProps) => (
+export const Button = ({ onPress, title, isDisabled }: ButtonProps) => (
   <Pressable
     onPress={onPress}
     style={({ pressed }) => ({
@@ -19,7 +20,8 @@ export const Button = ({ onPress, title }: ButtonProps) => (
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 10,
-    })}>
+    })}
+    disabled={isDisabled}>
     <Text>{title}</Text>
   </Pressable>
 );
