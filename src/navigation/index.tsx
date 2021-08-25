@@ -8,10 +8,6 @@ import SplashScreen from 'screens/Splash';
 const Stack = createNativeStackNavigator();
 
 const RootNavigation = () => {
-  const {navigationState} = useNavigationPresenter();
-
-  console.log({navigationState});
-
   return (
     <Stack.Navigator>
       <Stack.Screen name="Splash" component={SplashScreen} />

@@ -1,13 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
 
 type SplashRouter = {
-  goToLogin: () => void;
+  goToHome: () => void;
 };
 
 export const useSplashRouter = (): SplashRouter => {
   const navigation = useNavigation();
 
+  /**
+   * @todo Update navigation types to understand screens strings
+   */
   return {
-    goToLogin: () => navigation.navigate('Login'),
+    goToHome: () => navigation.navigate('Home'),
   };
 };
