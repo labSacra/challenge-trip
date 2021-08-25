@@ -1,5 +1,7 @@
+import { StyledText } from 'components/buttons/styles';
+import { Text } from 'components/texts';
 import React from 'react';
-import { Pressable, Text } from 'react-native';
+import { Pressable } from 'react-native';
 
 type ButtonProps = {
   onPress?: () => void;
@@ -14,14 +16,14 @@ export const Button = ({ onPress, title, isDisabled }: ButtonProps) => (
   <Pressable
     onPress={onPress}
     style={({ pressed }) => ({
-      backgroundColor: pressed ? '#d2f6f7' : '#afeef0',
+      backgroundColor: pressed ? '#f558b4' : '#ff0095',
       padding: 10,
       minWidth: 90,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 10,
+      borderRadius: 5,
     })}
     disabled={isDisabled}>
-    <Text>{title}</Text>
+    <StyledText>{title}</StyledText>
   </Pressable>
 );

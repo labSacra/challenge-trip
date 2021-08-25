@@ -4,4 +4,5 @@ export const FlexView = styled.View`
   flex: 1;
   align-items: center;
   justify-content: center;
+  background-color: #ffffff;
 `;

@@ -1,7 +1,7 @@
 import { Button } from 'components/buttons';
+import { ErrorText, Text } from 'components/texts';
 import { FlexView } from 'components/views';
 import React, { FC } from 'react';
-import { Text } from 'react-native';
 import { useHomePresenter } from 'screens/Home/presenter';
 import { WrapperView, StyledImage } from 'screens/Home/styles';
 
@@ -42,7 +42,7 @@ const HomeScreen: FC = () => {
           isDisabled={values.loading}
         />
       )}
-      {values.error && <Text>{values.error}</Text>}
+      {values.error && <ErrorText>{values.error}</ErrorText>}
     </FlexView>
   );
 };
