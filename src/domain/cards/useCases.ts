@@ -10,7 +10,7 @@ const shuffleDeckUseCase = (): Observable<void> =>
         return;
       }
 
-      throw new Error(response.error);
+      throw new Error('The dealer seems tired, maybe asking again will work?');
     }),
   );
 
@@ -26,7 +26,7 @@ const draw1CardUseCase = (): Observable<Card> =>
         return shuffleDeckAndDrawUseCase();
       }
 
-      throw new Error('Something is not working');
+      throw new Error('Where did that card go?');
     }),
   );
 
