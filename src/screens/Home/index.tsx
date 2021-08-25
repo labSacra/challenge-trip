@@ -5,20 +5,17 @@ import { useHomePresenter } from 'screens/Home/presenter';
 import { WrapperView, StyledImage } from 'screens/Home/styles';
 
 const HomeScreen: FC = () => {
-  useHomePresenter();
+  const { cards, placeBet } = useHomePresenter();
 
   return (
     <FlexView>
       <WrapperView>
-        <StyledImage
-          source={{ uri: 'https://deckofcardsapi.com/static/img/JD.png' }}
-        />
-        <StyledImage
-          source={{ uri: 'https://deckofcardsapi.com/static/img/QD.png' }}
-        />
+        {cards.map(card => (
+          <StyledImage key={card.code} source={{ uri: card.image }} />
+        ))}
       </WrapperView>
       <WrapperView>
-        <Button title="Up" />
+        <Button title="Up" onPress={placeBet} />
         <Button title="Down" />
       </WrapperView>
     </FlexView>

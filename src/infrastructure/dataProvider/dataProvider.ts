@@ -7,11 +7,11 @@ const headers = {
 };
 
 type NetworkDataProvider = {
-  get: <T>(params: NetworkRequest) => Observable<T>;
+  get: <Response>(params: NetworkRequest) => Observable<Response>;
 };
 
 const networkDataProvider: NetworkDataProvider = {
-  get: <T>(params: NetworkRequest): Observable<T> =>
+  get: <Response>(params: NetworkRequest): Observable<Response> =>
     defer(async () => {
       try {
         const response = await fetch(params.url, {
@@ -20,8 +20,8 @@ const networkDataProvider: NetworkDataProvider = {
           body: JSON.stringify(params.body),
         });
         const json = await response.json();
-        console.log({ json });
-        return json as T;
+        // console.log({ json });
+        return json as Response;
       } catch (error) {
         throw error;
       }

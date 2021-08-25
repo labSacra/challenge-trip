@@ -1,12 +1,18 @@
-import cardsService from 'domain/cards/services';
-import { useEffect } from 'react';
+import { Card } from 'domain/cards/types';
+import { drawFirstCard, drawNextCard } from 'domain/cards/useCases';
+import { useEffect, useState } from 'react';
 
-type HomePresenter = {};
+type HomePresenter = {
+  cards: Card[];
+  placeBet: () => void;
+};
 
 export const useHomePresenter = (): HomePresenter => {
+  const [cards, setCards] = useState<Card[]>([]);
+
   useEffect(() => {
-    const subscription = cardsService.drawCard().subscribe({
-      next: () => console.log('success'),
+    const subscription = drawFirstCard().subscribe({
+      next: setCards,
       error: error => console.log({ error }),
     });
 
@@ -15,5 +21,13 @@ export const useHomePresenter = (): HomePresenter => {
     };
   }, []);
 
-  return {};
+  return {
+    cards,
+    placeBet: () => {
+      drawNextCard().subscribe({
+        next: setCards,
+        error: error => console.log({ error }),
+      });
+    },
+  };
 };

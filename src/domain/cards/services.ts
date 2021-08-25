@@ -1,4 +1,6 @@
+import { DrawResponse, ShuffledDeckResponse } from 'domain/cards/types';
 import networkDataProvider from 'infrastructure/dataProvider/dataProvider';
+import { Observable } from 'rxjs';
 
 /**
  * Adding API directly to service to keep things simple. If different services existed
@@ -8,14 +10,14 @@ import networkDataProvider from 'infrastructure/dataProvider/dataProvider';
  */
 const api = 'https://deckofcardsapi.com/api/deck/o7s8yn78anvt/';
 
-const shuffleDeck = () =>
+const shuffleDeck = (): Observable<ShuffledDeckResponse> =>
   networkDataProvider.get({
     url: `${api}shuffle/?deck_count=1`,
   });
 
-const drawCard = () =>
+const drawCard = (count: number): Observable<DrawResponse> =>
   networkDataProvider.get({
-    url: `${api}draw/?count=1`,
+    url: `${api}draw/?count=${count}`,
   });
 
 const cardsService = {
