@@ -1,11 +1,11 @@
-import networkDataProvider from 'infrastructure/dataProvider/dataProvider';
+import cardsService from 'domain/cards/services';
 import { useEffect } from 'react';
 
 type HomePresenter = {};
 
 export const useHomePresenter = (): HomePresenter => {
   useEffect(() => {
-    const subscription = networkDataProvider.get({}).subscribe({
+    const subscription = cardsService.drawCard().subscribe({
       next: () => console.log('success'),
       error: error => console.log({ error }),
     });

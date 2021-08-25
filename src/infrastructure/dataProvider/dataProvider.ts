@@ -1,3 +1,4 @@
+import { NetworkRequest } from 'infrastructure/dataProvider/types';
 import { defer, Observable } from 'rxjs';
 
 const headers = {
@@ -6,20 +7,18 @@ const headers = {
 };
 
 type NetworkDataProvider = {
-  get: <T>(params: T) => Observable<T>;
+  get: <T>(params: NetworkRequest) => Observable<T>;
 };
 
 const networkDataProvider: NetworkDataProvider = {
-  get: <T>(params: T): Observable<T> =>
+  get: <T>(params: NetworkRequest): Observable<T> =>
     defer(async () => {
       try {
-        const response = await fetch(
-          'https://deckofcardsapi.com/api/deck/o7s8yn78anvt/shuffle/?deck_count=1',
-          {
-            method: 'GET',
-            headers,
-          },
-        );
+        const response = await fetch(params.url, {
+          method: 'GET',
+          headers,
+          body: JSON.stringify(params.body),
+        });
         const json = await response.json();
         console.log({ json });
         return json as T;
