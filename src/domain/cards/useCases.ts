@@ -1,7 +1,7 @@
 import cardsRepository from 'domain/cards/repository';
 import cardsService from 'domain/cards/services';
 import { Card } from 'domain/cards/types';
-import { map, mergeMap, Observable, of, pipe } from 'rxjs';
+import { delay, map, mergeMap, Observable, of, pipe } from 'rxjs';
 
 const shuffleDeckUseCase = (): Observable<void> =>
   cardsService.shuffleDeck().pipe(
@@ -31,13 +31,15 @@ const draw1CardUseCase = (): Observable<Card> =>
   );
 
 export const drawFirstCard = (): Observable<Card[]> =>
-  draw1CardUseCase().pipe(
-    map(card => {
-      cardsRepository.save([card]);
+  draw1CardUseCase()
+    .pipe(delay(5000))
+    .pipe(
+      map(card => {
+        cardsRepository.save([card]);
 
-      return [card];
-    }),
-  );
+        return [card];
+      }),
+    );
 
 export const drawNextCard = (): Observable<Card[]> =>
   draw1CardUseCase().pipe(

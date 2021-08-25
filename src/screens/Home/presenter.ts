@@ -8,38 +8,71 @@ type HomePresenter = {
   values: {
     cards: Card[];
     outcome: Outcome | null;
+    loading: boolean;
+    error: string | null;
   };
-  placeBet: (betType: BetType) => void;
+  onPress: {
+    placeBet: (betType: BetType) => void;
+    startGame: () => void;
+  };
 };
 
 export const useHomePresenter = (): HomePresenter => {
+  const [loading, setLoading] = useState(false);
   const [cards, setCards] = useState<Card[]>([]);
   const [outcome, setOutcome] = useState<Outcome | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const startRequest = () => {
+    setLoading(true);
+    setError(null);
+  };
+
+  const onRequestError = (err: Error) => {
+    setError(err.message);
+    setLoading(false);
+  };
+
+  const initialize = () => {
+    startRequest();
+
+    return drawFirstCard().subscribe({
+      next: setCards,
+      error: onRequestError,
+      complete: () => setLoading(false),
+    });
+  };
 
   useEffect(() => {
-    const subscription = drawFirstCard().subscribe({
-      next: setCards,
-      error: error => console.log({ error }),
-    });
+    const subscription = initialize();
 
     return () => {
       subscription.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
     values: {
       cards,
       outcome,
+      loading,
+      error,
     },
-    placeBet: (betType: BetType) => {
-      betOnCardUseCase(betType).subscribe({
-        next: betResult => {
-          setCards([...betResult.cards]);
-          setOutcome(betResult.outcome);
-        },
-        error: error => console.log({ error }),
-      });
+    onPress: {
+      placeBet: (betType: BetType) => {
+        startRequest();
+
+        betOnCardUseCase(betType).subscribe({
+          next: betResult => {
+            setCards([...betResult.cards]);
+            setOutcome(betResult.outcome);
+          },
+          error: onRequestError,
+          complete: () => setLoading(false),
+        });
+      },
+      startGame: () => initialize(),
     },
   };
 };
