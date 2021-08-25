@@ -1,4 +1,4 @@
-import {logoutUseCase} from 'domain/authentication/useCases/authenticationUseCase';
+import { logoutUseCase } from 'domain/authentication/useCases/authenticationUseCase';
 
 type HomePresenter = {};
 

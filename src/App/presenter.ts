@@ -1,5 +1,5 @@
-import {repoInitializationUseCase} from 'domain/initialization/useCases/repoInitializationUseCase';
-import {useEffect, useState} from 'react';
+import { repoInitializationUseCase } from 'domain/initialization/useCases/repoInitializationUseCase';
+import { useEffect, useState } from 'react';
 
 type AppPresenter = {
   isReady: boolean;

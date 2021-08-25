@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useSplashRouter } from 'screens/Splash/router';
 
 type SplashPresenter = {};
@@ -13,8 +13,8 @@ export const useSplashPresenter = (): SplashPresenter => {
 
     return () => {
       clearInterval(timeout);
-    }
-  }, [])
+    };
+  }, []);
 
   return {};
 };

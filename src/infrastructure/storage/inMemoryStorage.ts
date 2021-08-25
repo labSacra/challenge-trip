@@ -4,7 +4,7 @@ export type InMemoryStorage<T> = {
   removeItem: () => void;
 };
 
-const store: {[key: string]: unknown} = {};
+const store: { [key: string]: unknown } = {};
 
 const inMemoryStorage = <T>(key: string): InMemoryStorage<T> => ({
   addItem: (item: T) => {
@@ -12,9 +12,9 @@ const inMemoryStorage = <T>(key: string): InMemoryStorage<T> => ({
   },
   getItem: () => (store[key] as T) ?? null,
   removeItem: () => {
-    console.log({store});
+    console.log({ store });
     store[key] = undefined;
-    console.log({store});
+    console.log({ store });
   },
 });
 
