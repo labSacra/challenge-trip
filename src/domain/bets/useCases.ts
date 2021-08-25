@@ -21,7 +21,7 @@ const cardOrder: CardValue[] = [
 
 export const betOnCardUseCase = (betType: BetType): Observable<BetResult> =>
   drawNextCard()
-    .pipe(delay(3000))
+    .pipe(delay(300))
     .pipe(
       map(cards => {
         const previousCardIndex = cardOrder.findIndex(

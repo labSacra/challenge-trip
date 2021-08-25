@@ -32,7 +32,7 @@ const draw1CardUseCase = (): Observable<Card> =>
 
 export const drawFirstCard = (): Observable<Card[]> =>
   draw1CardUseCase()
-    .pipe(delay(5000))
+    .pipe(delay(500))
     .pipe(
       map(card => {
         cardsRepository.save([card]);
