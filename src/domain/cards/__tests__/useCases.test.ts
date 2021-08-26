@@ -9,7 +9,11 @@ import {
 
 jest.mock('domain/cards/repository');
 
-import { cards, drawCardApi, shuffleDeckAPI } from 'domain/cards/__mocks__/api';
+import {
+  cards,
+  drawCardApi,
+  shuffleDeckAPI,
+} from 'domain/cards/__mocks__/mockData';
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 
