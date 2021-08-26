@@ -34,11 +34,12 @@ export const shuffleDeckAPI = {
 };
 
 export const drawCardApi = {
-  successResponse: {
-    success: true,
-    cards: [cards[0]],
-    remaining: 51,
-  } as DrawResponse,
+  successResponse: (card?: Card) =>
+    ({
+      success: true,
+      cards: [card ? card : cards[0]],
+      remaining: 51,
+    } as DrawResponse),
   noRemainingResponse: {
     success: false,
     cards: [],

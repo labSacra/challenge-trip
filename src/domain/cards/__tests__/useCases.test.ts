@@ -3,6 +3,7 @@ import cardsRepository from 'domain/cards/repository';
 import {
   draw1CardUseCase,
   drawFirstCardUseCase,
+  drawNextCardUseCase,
   shuffleDeckUseCase,
 } from 'domain/cards/useCases';
 
@@ -64,11 +65,11 @@ describe('Cards UseCases', () => {
     it('should return 1 card', () => {
       jest
         .spyOn(cardsService, 'drawCard')
-        .mockReturnValueOnce(of(drawCardApi.successResponse));
+        .mockReturnValueOnce(of(drawCardApi.successResponse()));
 
       scheduler.run(({ expectObservable }) => {
         const expectedMarble = '(a|)';
-        const expectedResult = { a: drawCardApi.successResponse.cards[0] };
+        const expectedResult = { a: cards[0] };
 
         expectObservable(draw1CardUseCase()).toBe(
           expectedMarble,
@@ -81,7 +82,7 @@ describe('Cards UseCases', () => {
       jest
         .spyOn(cardsService, 'drawCard')
         .mockReturnValueOnce(of(drawCardApi.noRemainingResponse))
-        .mockReturnValueOnce(of(drawCardApi.successResponse));
+        .mockReturnValueOnce(of(drawCardApi.successResponse()));
 
       jest
         .spyOn(cardsService, 'shuffleDeck')
@@ -89,7 +90,7 @@ describe('Cards UseCases', () => {
 
       scheduler.run(({ expectObservable }) => {
         const expectedMarble = '(a|)';
-        const expectedResult = { a: drawCardApi.successResponse.cards[0] };
+        const expectedResult = { a: cards[0] };
 
         expectObservable(draw1CardUseCase()).toBe(
           expectedMarble,
@@ -116,19 +117,68 @@ describe('Cards UseCases', () => {
     it('should draw the first card', () => {
       jest
         .spyOn(cardsService, 'drawCard')
-        .mockReturnValueOnce(of(drawCardApi.successResponse));
+        .mockReturnValueOnce(of(drawCardApi.successResponse()));
 
       scheduler.run(({ expectObservable, flush }) => {
         const expectedMarble = '500ms (a|)';
         const expectedResult = { a: [cards[0]] };
 
-        const result = drawFirstCardUseCase();
-
-        expectObservable(result).toBe(expectedMarble, expectedResult);
+        expectObservable(drawFirstCardUseCase()).toBe(
+          expectedMarble,
+          expectedResult,
+        );
 
         flush();
 
         expect(cardsRepository.save).toHaveBeenCalledWith([cards[0]]);
+      });
+    });
+  });
+
+  describe('The drawNextCardUseCase', () => {
+    it('should draw a first card and return the new cards to display', () => {
+      jest
+        .spyOn(cardsService, 'drawCard')
+        .mockReturnValueOnce(of(drawCardApi.successResponse(cards[1])));
+
+      jest.spyOn(cardsRepository, 'get').mockReturnValueOnce([cards[0]]);
+
+      scheduler.run(({ expectObservable, flush }) => {
+        const expectedMarble = '(a|)';
+        const expectedResult = { a: [cards[0], cards[1]] };
+
+        expectObservable(drawNextCardUseCase()).toBe(
+          expectedMarble,
+          expectedResult,
+        );
+
+        flush();
+
+        expect(cardsRepository.save).toHaveBeenCalledWith(expectedResult.a);
+      });
+    });
+
+    it('should draw a second card and return the new cards to display', () => {
+      jest
+        .spyOn(cardsService, 'drawCard')
+        .mockReturnValueOnce(of(drawCardApi.successResponse(cards[2])));
+
+      jest
+        .spyOn(cardsRepository, 'get')
+        .mockReturnValueOnce([cards[0], cards[1]]);
+
+      scheduler.run(({ expectObservable, flush }) => {
+        const expectedMarble = '(a|)';
+        const expectedResult = { a: [cards[1], cards[2]] };
+
+        expectObservable(drawNextCardUseCase()).toBe(
+          expectedMarble,
+          expectedResult,
+        );
+
+        flush();
+
+        expect(cardsRepository.save).toHaveBeenCalledWith(expectedResult.a);
       });
     });
   });
