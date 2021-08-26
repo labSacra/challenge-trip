@@ -1,7 +1,7 @@
 import { BetType, Outcome } from 'domain/bets/types';
 import { betOnCardUseCase } from 'domain/bets/useCases';
 import { Card } from 'domain/cards/types';
-import { drawFirstCard } from 'domain/cards/useCases';
+import { drawFirstCardUseCase } from 'domain/cards/useCases';
 import { useEffect, useState } from 'react';
 
 type HomePresenter = {
@@ -36,7 +36,7 @@ export const useHomePresenter = (): HomePresenter => {
   const initialize = () => {
     startRequest();
 
-    return drawFirstCard().subscribe({
+    return drawFirstCardUseCase().subscribe({
       next: setCards,
       error: onRequestError,
       complete: () => setLoading(false),

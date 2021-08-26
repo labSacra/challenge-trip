@@ -1,7 +1,10 @@
 import cardsService from 'domain/cards/services';
-import { ShuffledDeckResponse } from 'domain/cards/types';
-import { shuffleDeckUseCase } from 'domain/cards/useCases';
-import { shuffleDeckAPI } from 'domain/cards/__mocks__/api';
+import {
+  draw1CardUseCase,
+  drawFirstCardUseCase,
+  shuffleDeckUseCase,
+} from 'domain/cards/useCases';
+import { drawCardApi, shuffleDeckAPI } from 'domain/cards/__mocks__/api';
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 
@@ -12,12 +15,15 @@ describe('Cards UseCases', () => {
     scheduler = new TestScheduler((actual, expected) => {
       expect(actual).toEqual(expected);
     });
+
+    jest.clearAllMocks();
   });
 
   describe('The shuffleDeckUseCase', () => {
     it('should return in a successful response from shuffle service', () => {
-      const mock = jest.spyOn(cardsService, 'shuffleDeck');
-      mock.mockReturnValueOnce(of(shuffleDeckAPI.successResponse));
+      jest
+        .spyOn(cardsService, 'shuffleDeck')
+        .mockReturnValueOnce(of(shuffleDeckAPI.successResponse));
 
       scheduler.run(({ expectObservable }) => {
         const expectedMarble = '(a|)';
@@ -31,8 +37,9 @@ describe('Cards UseCases', () => {
     });
 
     it('should throw error in a failed response from shuffle service', () => {
-      const mock = jest.spyOn(cardsService, 'shuffleDeck');
-      mock.mockReturnValueOnce(of(shuffleDeckAPI.failedResponse));
+      jest
+        .spyOn(cardsService, 'shuffleDeck')
+        .mockReturnValueOnce(of(shuffleDeckAPI.failedResponse));
 
       scheduler.run(({ expectObservable }) => {
         const expectedMarble = '#';
@@ -48,4 +55,62 @@ describe('Cards UseCases', () => {
       });
     });
   });
+
+  describe('The draw1CardUseCase', () => {
+    it('should return 1 card', () => {
+      jest
+        .spyOn(cardsService, 'drawCard')
+        .mockReturnValueOnce(of(drawCardApi.successResponse));
+
+      scheduler.run(({ expectObservable }) => {
+        const expectedMarble = '(a|)';
+        const expectedResult = { a: drawCardApi.successResponse.cards[0] };
+
+        expectObservable(draw1CardUseCase()).toBe(
+          expectedMarble,
+          expectedResult,
+        );
+      });
+    });
+
+    it('should shuffle deck first and return 1 card', () => {
+      jest
+        .spyOn(cardsService, 'drawCard')
+        .mockReturnValueOnce(of(drawCardApi.noRemainingResponse))
+        .mockReturnValueOnce(of(drawCardApi.successResponse));
+
+      jest
+        .spyOn(cardsService, 'shuffleDeck')
+        .mockReturnValueOnce(of(shuffleDeckAPI.successResponse));
+
+      scheduler.run(({ expectObservable }) => {
+        const expectedMarble = '(a|)';
+        const expectedResult = { a: drawCardApi.successResponse.cards[0] };
+
+        expectObservable(draw1CardUseCase()).toBe(
+          expectedMarble,
+          expectedResult,
+        );
+      });
+    });
+
+    it('should throw error in a failed response from draw service', () => {
+      jest
+        .spyOn(cardsService, 'drawCard')
+        .mockReturnValueOnce(of(drawCardApi.failedResponse));
+
+      scheduler.run(({ expectObservable }) => {
+        const expectedMarble = '#';
+        const error = new Error('Where did that card go?');
+
+        expectObservable(draw1CardUseCase()).toBe(expectedMarble, null, error);
+      });
+    });
+  });
+
+  // describe('drawFirstCard', () => {
+  //   it('', () => {
+  //     drawFirstCardUseCase;
+  //   });
+  // });
 });

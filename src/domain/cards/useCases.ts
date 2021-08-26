@@ -30,7 +30,7 @@ export const draw1CardUseCase = (): Observable<Card> =>
     }),
   );
 
-export const drawFirstCard = (): Observable<Card[]> =>
+export const drawFirstCardUseCase = (): Observable<Card[]> =>
   draw1CardUseCase()
     .pipe(delay(500))
     .pipe(
@@ -41,7 +41,7 @@ export const drawFirstCard = (): Observable<Card[]> =>
       }),
     );
 
-export const drawNextCard = (): Observable<Card[]> =>
+export const drawNextCardUseCase = (): Observable<Card[]> =>
   draw1CardUseCase().pipe(
     map(card => {
       const { get, save } = cardsRepository;

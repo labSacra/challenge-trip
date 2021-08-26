@@ -1,6 +1,6 @@
 import { BetResult, BetType, Outcome } from 'domain/bets/types';
 import { CardValue } from 'domain/cards/types';
-import { drawNextCard } from 'domain/cards/useCases';
+import { drawNextCardUseCase } from 'domain/cards/useCases';
 import { delay, map, Observable } from 'rxjs';
 
 const cardOrder: CardValue[] = [
@@ -20,7 +20,7 @@ const cardOrder: CardValue[] = [
 ];
 
 export const betOnCardUseCase = (betType: BetType): Observable<BetResult> =>
-  drawNextCard()
+  drawNextCardUseCase()
     .pipe(delay(300))
     .pipe(
       map(cards => {
