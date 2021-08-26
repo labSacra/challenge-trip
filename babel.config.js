@@ -25,5 +25,6 @@ module.exports = {
         root: ['./src'],
       },
     ],
+    ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
   ],
 };

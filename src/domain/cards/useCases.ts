@@ -3,7 +3,7 @@ import cardsService from 'domain/cards/services';
 import { Card } from 'domain/cards/types';
 import { delay, map, mergeMap, Observable, of, pipe } from 'rxjs';
 
-const shuffleDeckUseCase = (): Observable<void> =>
+export const shuffleDeckUseCase = (): Observable<void> =>
   cardsService.shuffleDeck().pipe(
     map(response => {
       if (response.success) {
@@ -14,10 +14,10 @@ const shuffleDeckUseCase = (): Observable<void> =>
     }),
   );
 
-const shuffleDeckAndDrawUseCase = (): Observable<Card> =>
+export const shuffleDeckAndDrawUseCase = (): Observable<Card> =>
   shuffleDeckUseCase().pipe(mergeMap(() => draw1CardUseCase()));
 
-const draw1CardUseCase = (): Observable<Card> =>
+export const draw1CardUseCase = (): Observable<Card> =>
   cardsService.drawCard(1).pipe(
     mergeMap(response => {
       if (response.success) {
