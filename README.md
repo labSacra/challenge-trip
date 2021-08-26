@@ -11,6 +11,10 @@
   $ cd ios/ && bundle exec pod install
 ```
 
+
+https://user-images.githubusercontent.com/4606616/131050260-7de42209-fa92-4261-9341-8c833590dfd6.mp4
+
+
 ---
 
 ## Architecture
