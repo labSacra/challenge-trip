@@ -1,10 +1,14 @@
 import cardsService from 'domain/cards/services';
+import cardsRepository from 'domain/cards/repository';
 import {
   draw1CardUseCase,
   drawFirstCardUseCase,
   shuffleDeckUseCase,
 } from 'domain/cards/useCases';
-import { drawCardApi, shuffleDeckAPI } from 'domain/cards/__mocks__/api';
+
+jest.mock('domain/cards/repository');
+
+import { cards, drawCardApi, shuffleDeckAPI } from 'domain/cards/__mocks__/api';
 import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 
@@ -108,9 +112,24 @@ describe('Cards UseCases', () => {
     });
   });
 
-  // describe('drawFirstCard', () => {
-  //   it('', () => {
-  //     drawFirstCardUseCase;
-  //   });
-  // });
+  describe('The drawFirstCardUseCase', () => {
+    it('should draw the first card', () => {
+      jest
+        .spyOn(cardsService, 'drawCard')
+        .mockReturnValueOnce(of(drawCardApi.successResponse));
+
+      scheduler.run(({ expectObservable, flush }) => {
+        const expectedMarble = '500ms (a|)';
+        const expectedResult = { a: [cards[0]] };
+
+        const result = drawFirstCardUseCase();
+
+        expectObservable(result).toBe(expectedMarble, expectedResult);
+
+        flush();
+
+        expect(cardsRepository.save).toHaveBeenCalledWith([cards[0]]);
+      });
+    });
+  });
 });
