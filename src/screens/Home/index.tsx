@@ -18,7 +18,11 @@ const HomeScreen: FC = () => {
       {values.loading && <Text>Drawing card...</Text>}
       <WrapperView>
         {values.cards.map(card => (
-          <StyledImage key={card.code} source={{ uri: card.image }} />
+          <StyledImage
+            testID="card-image"
+            key={card.code}
+            source={{ uri: card.image }}
+          />
         ))}
       </WrapperView>
       {values.cards.length > 0 && (
